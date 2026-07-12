@@ -411,6 +411,65 @@ a {
   overflow: hidden;
 }
 
+/* Iframe video di dalam .hero-video-wrap di-resize lewat JS (fitHeroVideoIframe)
+   supaya videonya "cover" (mengisi penuh, tanpa bar hitam kiri/kanan atau
+   atas/bawah) — dipusatkan lewat transform, ukuran w/h diisi inline oleh JS. */
+#hero-yt-player {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: none;
+}
+
+/* ============================================================
+   MODE DESKTOP (>1024px) — panel navigator (busur avatar) & info
+   klien (nama/username/tags) diperbesar. Nama & deskripsi klien
+   dijadikan daya tarik kedua setelah video, jadi ukurannya dinaikkan
+   dan area max-width-nya dilonggarkan (JS yang mengatur nilai akhir
+   max-width per-frame tetap menghormati posisi avatar aktif, jadi
+   teks tidak akan pernah menabrak avatar meski fontnya lebih besar).
+   Breakpoint disamakan dengan mobile-switch (1024px) supaya tablet
+   (termasuk landscape ~1024px) konsisten pakai layout mobile, bukan
+   ikut-ikutan gaya desktop di sini. */
+@media (min-width: 1025px) {
+  /* Navbar (.navbar-inner 72px + border-bottom 1px = 73px) selalu nempel di
+     atas (position:sticky). Supaya SAAT HALAMAN DIBUKA yang kelihatan cuma
+     hero (carousel + navigator) tanpa ada bagian testimoni yang nyembul di
+     bawah, tinggi hero-inner dipaksa persis mengisi sisa layar (100vh
+     dikurangi tinggi navbar) — bukan lagi dibatasi clamp(...,600px) seperti
+     sebelumnya. */
+  .hero-inner {
+    min-height: calc(100vh - 73px);
+  }
+
+  .hero-left {
+    /* Skala geometri busur (avatar) dihitung JS dari lebar panel ini
+       (scale = panelWidth / 320), jadi menaikkan clamp di sini otomatis
+       memperbesar semua avatar & radius busurnya juga. */
+    width: clamp(260px, 40vw, 560px);
+  }
+
+  .hero-client-info {
+    max-width: clamp(90px, calc(30vw - 20px), 280px);
+  }
+
+  .hero-client-name {
+    font-size: clamp(18px, 2.9vw, 38px);
+    margin-bottom: 6px;
+  }
+
+  .hero-client-username {
+    font-size: clamp(13px, 1.6vw, 19px);
+    margin-bottom: 11px;
+  }
+
+  .hero-client-tags li {
+    font-size: clamp(11px, 1.15vw, 15px);
+    line-height: 2;
+  }
+}
+
 /* ============================================================
    MODE TABLET & MOBILE (≤900px) — susunan hero diubah total:
    video di atas (full width) → baris avatar navigator → nama +
@@ -423,7 +482,7 @@ a {
    ============================================================ */
 .hero-mobile-nav { display: none; }
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .hero-inner {
     flex-direction: column;
     min-height: auto;
@@ -2103,7 +2162,7 @@ const TESTIMONI_ITEMS = [
     username: "@Swansage11",
     stats: ["167K Subscribers Youtube", "172K Followers Instagram", "600K Followers Tiktok"],
     foto: "assets/images/testi/swan_foto.webp",
-    nameline: "assets/images/testi/swan_nameline.svg",
+    nameline: "assets/images/testi/swan_nameline.webp",
     namelineWidth: 36, // dikecilkan 30% dari ukuran default (52%)
     quote: "assets/images/testi/SWAN_Testimonial__4_.webp",
     avatar: "assets/images/avatar/SWAN SAGE_AV 3.webp",
@@ -2683,7 +2742,13 @@ window.setLanguage = function (lang) {
     const scale  = panelW / 320;          // skala relatif ke desain awal 320px
     return {
       R  : Math.round(220 * scale),       // radius busur
-      CX : Math.round(-60 * scale),       // pusat X di luar kiri
+      // Digeser ke kanan (dari -60 jadi -5) supaya seluruh busur avatar ikut
+      // geser mendekat ke video, memberi ruang lebih lega di kiri untuk teks
+      // nama/username/tags yang sekarang lebih besar. Karena max-width teks
+      // dihitung ulang tiap render dari posisi avatar aktif yang sebenarnya
+      // (lihat render()), pergeseran ini otomatis nambah ruang teks tanpa
+      // perlu utak-atik hitungan max-width-nya secara terpisah.
+      CX : Math.round(-5 * scale),        // pusat X (sedikit di luar kiri)
       CY : Math.round(panelH / 2),        // selalu tengah vertikal
       SIZES: [
         Math.round(40 * scale),
@@ -2714,6 +2779,76 @@ window.setLanguage = function (lang) {
     const heroRight = document.querySelector('.hero-right');
     if (!heroRight) return;
     heroRight.style.left = '0px';
+  }
+
+  // ---- Khusus DESKTOP (>1024px): buang bar hitam kiri/kanan (atau atas/
+  // bawah) di video YouTube dengan cara "cover", persis konsepnya
+  // background-size:cover pada gambar. Iframe YouTube selalu menjaga rasio
+  // asli videonya (16:9) di DALAM kotak iframe — kalau kotak .hero-video-wrap
+  // rasionya beda dari 16:9, YouTube nambahin bar hitam di sisi yang
+  // kelebihan. object-fit TIDAK berlaku untuk <iframe>, jadi triknya:
+  // paksa iframe punya rasio 16:9 PERSIS (supaya videonya penuh tanpa bar
+  // sama sekali), lalu perbesar iframe itu sampai menutupi wrap sepenuhnya
+  // (mirip cover), baru dipusatkan & dipotong kelebihannya oleh overflow:
+  // hidden pada wrap.
+  function fitHeroVideoIframe() {
+    const iframe = document.getElementById('hero-yt-player');
+    if (!iframe || !videoWrap) return;
+
+    // Di luar desktop, kembalikan ke default inset:0 + 100% x 100%
+    // (perilaku lama) supaya tidak mengubah tampilan mobile/tablet yang
+    // sudah pas. Angka 1024 disamakan dengan breakpoint CSS hero (mobile
+    // & tablet kini pakai layout yang sama sampai 1024px).
+    //
+    // PENTING: top & left HARUS diisi '0' (bukan dikosongkan ''), karena
+    // ada CSS default #hero-yt-player { top:50%; left:50%; } — kalau
+    // dikosongkan, nilai CSS itu yang kepakai lagi (bukan balik ke 0),
+    // videonya jadi geser separuh kontainer dan cuma pojoknya yang
+    // kelihatan (ini penyebab kotak abu-abu yang muncul di video).
+    if (window.innerWidth <= 1024) {
+      iframe.style.inset  = '0';
+      iframe.style.top    = '0';
+      iframe.style.left   = '0';
+      iframe.style.right  = '0';
+      iframe.style.bottom = '0';
+      iframe.style.transform = 'none';
+      iframe.style.width  = '100%';
+      iframe.style.height = '100%';
+      return;
+    }
+
+    const wrapW = videoWrap.clientWidth;
+    const wrapH = videoWrap.clientHeight;
+    if (!wrapW || !wrapH) return;
+
+    const videoRatio = 16 / 9;
+    const wrapRatio  = wrapW / wrapH;
+
+    let w, h;
+    if (wrapRatio >= videoRatio) {
+      // Wrap lebih "lebar" dari 16:9 → penuhi lebar, tinggi otomatis lebih
+      // dari cukup (kelebihan tinggi dipotong overflow:hidden)
+      w = wrapW;
+      h = wrapW / videoRatio;
+    } else {
+      // Wrap lebih "tinggi" dari 16:9 → penuhi tinggi, lebar otomatis
+      // lebih dari cukup (kelebihan lebar dipotong overflow:hidden)
+      h = wrapH;
+      w = wrapH * videoRatio;
+    }
+
+    // Lepas dulu "inset:0" bawaan (kalau ada dari render sebelumnya), lalu
+    // posisikan lewat top/left 50% + transform supaya iframe yang
+    // diperbesar ini tetap terpusat di dalam wrap, kelebihannya otomatis
+    // terpotong rapi oleh overflow:hidden pada .hero-video-wrap.
+    iframe.style.inset  = 'auto';
+    iframe.style.right  = 'auto';
+    iframe.style.bottom = 'auto';
+    iframe.style.top    = '50%';
+    iframe.style.left   = '50%';
+    iframe.style.transform = 'translate(-50%, -50%)';
+    iframe.style.width  = Math.ceil(w) + 'px';
+    iframe.style.height = Math.ceil(h) + 'px';
   }
 
   function drawRail() {
@@ -2973,6 +3108,11 @@ window.setLanguage = function (lang) {
             frameborder="0"
             style="position:absolute;inset:0;width:100%;height:100%;border:none;z-index:1;"
           ></iframe>`;
+
+        // Langsung "cover"-kan videonya (khusus desktop) begitu iframe
+        // dipasang, supaya tidak sempat kelihatan ada bar hitam sebelum
+        // ukurannya disesuaikan.
+        fitHeroVideoIframe();
 
         // Tandai video render keberapa ini (dipakai buat cegah race
         // condition: kalau klien sudah ganti lagi sebelum API/player
