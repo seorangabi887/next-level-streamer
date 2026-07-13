@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galeri Karya — Nama Brand Kamu</title>
+<meta name="description" content="Galeri lengkap contoh karya overlay stream, starting screen, ending screen, dan lainnya.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-main: #F7F3E9;
+  --bg-card: #FFFFFF;
+  --navy: #191939;
+  --navy-soft: #4A4A78;
+  --border-soft: rgba(25,25,57,0.14);
+  --dark-accent: #ECB44D;
+
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'Sora', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-main);
+  color: var(--navy);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; animation: none !important; }
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+a { color: inherit; text-decoration: none; }
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  color: var(--navy);
+  margin-bottom: 8px;
+  line-height: 1.15;
+}
+
+/* ===== HEADER halaman galeri (lebih sederhana dari navbar utama) ===== */
+.galeri-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(247,243,233,0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border-soft);
+  padding: 18px 0;
+}
+
+.galeri-header-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.galeri-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--navy-soft);
+  transition: color 0.15s ease;
+}
+
+.galeri-back-link:hover { color: var(--navy); }
+
+.galeri-page-title {
+  padding: 40px 0 8px;
+}
+
+.galeri-page-sub {
+  color: var(--navy-soft);
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+/* ===== GALERI grid — gaya Pinterest (masonry, tinggi mengikuti rasio
+   gambar asli) dengan sudut membulat di tiap item. Sama persis dengan
+   yang dipakai di preview galeri pada halaman utama. ===== */
+.galeri-section { padding: 8px 0 64px; }
+
+.gallery-grid {
+  column-count: 4;
+  column-gap: 14px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.gallery-item {
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  margin-bottom: 14px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.gallery-item:hover {
+  filter: brightness(0.96);
+  transform: translateY(-2px);
+}
+
+.gallery-item img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 1024px) {
+  .gallery-grid { column-count: 3; }
+}
+
+@media (max-width: 720px) {
+  .gallery-grid { column-count: 2; column-gap: 10px; padding: 0 12px; }
+  .gallery-item { margin-bottom: 10px; border-radius: 12px; }
+}
+
+@media (max-width: 480px) {
+  .gallery-grid { column-count: 2; }
+}
+
+/* ===== FOOTER (sama seperti halaman utama) ===== */
+.footer {
+  background: var(--navy);
+  padding: 24px 0;
+  text-align: center;
+}
+
+.footer p {
+  font-size: 13px;
+  color: rgba(247,243,233,0.6);
+}
+
+/* ===== LIGHTBOX: preview gambar diperbesar ===== */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10,10,26,0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 1100;
+}
+
+.lightbox-overlay.open { display: flex; }
+
+.lightbox-content {
+  background: transparent;
+  border-radius: 16px;
+  width: min(860px, 94vw);
+  max-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1101;
+}
+
+.lightbox-close:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+</style>
+</head>
+<body>
+
+<header class="galeri-header">
+  <div class="container galeri-header-inner">
+    <a href="index.html" class="galeri-back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Kembali ke Beranda
+    </a>
+  </div>
+</header>
+
+<main>
+  <div class="container galeri-page-title">
+    <h1 class="section-title">Galeri Karya</h1>
+    <p class="galeri-page-sub">Semua contoh hasil kerja — starting screen, ending screen, stinger, BRB, banner, dan lainnya.</p>
+  </div>
+
+  <section class="galeri-section">
+    <!-- PLACEHOLDER: konten diisi otomatis oleh JS dari GALERI_ITEMS di bawah -->
+    <div class="gallery-grid" id="gallery-grid"></div>
+  </section>
+</main>
+
+<!-- ===== LIGHTBOX: preview karya diperbesar ===== -->
+<div class="lightbox-overlay" id="lightbox-overlay">
+  <button class="lightbox-close" id="lightbox-close" aria-label="Tutup pratinjau">
+    <svg viewBox="0 0 24 24" width="22" height="22"><path d="M18 6L6 18M6 6l12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+  <div class="lightbox-content" id="lightbox-content"></div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>&copy; 2026 Nama Brand Kamu. Semua karya dibuat dengan dedikasi.</p>
+  </div>
+</footer>
+
+<script>
+// ============================================================
+// LOKASI GAMBAR GALERI — sama seperti di index.html, sekarang
+// pindah dari folder lokal assets/images/gallery/ ke Cloudflare R2
+// (custom domain cdn.nextlevelstream.my.id).
+// ============================================================
+const GALLERY_PATH = 'https://cdn.nextlevelstream.my.id/assets/images/gallery/';
+
+// ============================================================
+// GALERI: 40 foto portofolio (sinkron dengan data di halaman utama —
+// kalau menambah/mengubah karya, update juga array ini)
+// ============================================================
+const GALERI_ITEMS = [
+  { id:  1, label: "Cendy Starting",              file: "PREVIEW_CENDY STARTING.webp" },
+  { id:  2, label: "Cendy Stinger",               file: "PREVIEW_CENDY STINGER.webp" },
+  { id:  3, label: "Cendy BRB",                   file: "PREVIEW_CENDY BRB.webp" },
+  { id:  4, label: "Cendy Ending",                file: "PREVIEW_CENDY ENDING.webp" },
+  { id:  5, label: "Wielino Starting",            file: "PREVIEW_WIELINO STARTING.webp" },
+  { id:  6, label: "Wielino Ending",               file: "PREVIEW_WIELINO ENDING.webp" },
+  { id:  7, label: "Wielino Banner",              file: "PREVIEW_WIELINO BANNER.webp" },
+  { id:  8, label: "Swan Starting",               file: "PREVIEW_SWAN STARTING.webp" },
+  { id:  9, label: "Swan Starting 2",             file: "PREVIEW_SWAN STARTING 2.webp" },
+  { id: 10, label: "Swan Ending",                 file: "PREVIEW_SWAN ENDING.webp" },
+  { id: 11, label: "Swan Ending 2",               file: "PREVIEW_SWAN ENDING 2.webp" },
+  { id: 12, label: "Luthfi Starting",             file: "PREVIEW_LUTHFI HALIMAWAN STARTING.webp" },
+  { id: 13, label: "Luthfi Starting V2",          file: "PREVIEW_LUTHFI HALIMAWAN STARTING V2.webp" },
+  { id: 14, label: "Luthfi Ending",               file: "PREVIEW_LUTHFI HALIMAWANI ENDING.webp" },
+  { id: 15, label: "Luthfi Ending V2",            file: "PREVIEW_LUTHFI HALIMAWAN ENDING V2.webp" },
+  { id: 16, label: "Luthfi BRB",                  file: "PREVIEW_LUTHFI HALIMAWAN BRB.webp" },
+  { id: 17, label: "Habibie Starting",            file: "PREVIEW_HEBIEBE STARTING.webp" },
+  { id: 18, label: "Habibie Ending",              file: "PREVIEW_HABIEBIE ENDING.webp" },
+  { id: 19, label: "Hitzed Starting",             file: "PREVIEW_HITZED STARTING.webp" },
+  { id: 20, label: "Hitzed Stinger",              file: "PREVIEW_HITZED STINGER.webp" },
+  { id: 21, label: "Hitzed BRB",                  file: "PREVIEW_HITZED BRB.webp" },
+  { id: 22, label: "Nadhil Starting",             file: "PREVIEW_NADHIL STARTING.webp" },
+  { id: 23, label: "Nadhil Ending",               file: "PREVIEW_NADHIL ENDING.webp" },
+  { id: 24, label: "Celiboy Stinger",             file: "PREVIEW_CELIBOY STINGER.webp" },
+  { id: 25, label: "Efkah Starting",              file: "PREVIEW_EFKAH STARTING.webp" },
+  { id: 26, label: "Efkah Ending",                file: "PREVIEW_EFKAH ENDING.webp" },
+  { id: 27, label: "Efkah Fajar Concept",         file: "PREVIEW_EFKAH FAJAR CONCEPT.webp" },
+  { id: 28, label: "Adeline Starting V1",         file: "PREVIEW_ADELINE STARTING V1.webp" },
+  { id: 29, label: "Adeline Starting V2",         file: "PREVIEW_ADELINE STARTING V2.webp" },
+  { id: 30, label: "Adeline Starting V3",         file: "PREVIEW_ADELINE STARTING V3.webp" },
+  { id: 31, label: "Adeline Starting V4",         file: "PREVIEW_ADELINE STARTING V4.webp" },
+  { id: 32, label: "Adeline Ending",              file: "PREVIEW_ADELINE ENDING.webp" },
+  { id: 33, label: "Bubble Starting",             file: "PREVIEW_BUBBLE STARTING.webp" },
+  { id: 34, label: "Bubble Ending",               file: "PREVIEW_BUBBLE ENDING.webp" },
+  { id: 35, label: "Bubble Banner",               file: "PREVIEW_BUBBLE BANNER.webp" },
+  { id: 36, label: "Deul Starting",               file: "PREVIEW_DEUL STARTING.webp" },
+  { id: 37, label: "Deul Ending",                 file: "PREVIEW_DEUL ENDING.webp" },
+  { id: 38, label: "Even Starting",               file: "PREVIEW_EVEN_STARTING.webp" },
+  { id: 39, label: "Even Banner",                 file: "PREVIEW_EVEN_BANNER.webp" },
+  { id: 40, label: "Even Ending",                 file: "PREVIEW_EVEN_ENDING.webp" },
+];
+
+// ============================================================
+// LIGHTBOX
+// ============================================================
+(function () {
+  const lightboxOverlay = document.getElementById('lightbox-overlay');
+  const lightboxContent = document.getElementById('lightbox-content');
+  const lightboxClose = document.getElementById('lightbox-close');
+  if (!lightboxOverlay) return;
+
+  window.openLightbox = function (media) {
+    lightboxContent.innerHTML = `<img src="${media.src}" alt="${media.label}" style="max-width:100%;max-height:80vh;border-radius:12px;object-fit:contain;display:block;">`;
+    lightboxOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeLightbox = function () {
+    lightboxContent.innerHTML = '';
+    lightboxOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  lightboxClose.addEventListener('click', window.closeLightbox);
+  lightboxOverlay.addEventListener('click', (e) => {
+    if (e.target === lightboxOverlay) window.closeLightbox();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lightboxOverlay.classList.contains('open')) {
+      window.closeLightbox();
+    }
+  });
+})();
+
+// ============================================================
+// GALERI: render grid masonry dari data + klik untuk lightbox
+// ============================================================
+(function () {
+  const galleryGrid = document.getElementById('gallery-grid');
+  if (!galleryGrid) return;
+
+  galleryGrid.innerHTML = GALERI_ITEMS.map((item) => `
+    <div class="gallery-item" data-id="${item.id}">
+      <img src="${GALLERY_PATH}${item.file}" alt="${item.label}" loading="lazy">
+    </div>
+  `).join('');
+
+  galleryGrid.querySelectorAll('.gallery-item').forEach((el, i) => {
+    const item = GALERI_ITEMS[i];
+    el.addEventListener('click', () => {
+      window.openLightbox({ label: item.label, src: `${GALLERY_PATH}${item.file}` });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
