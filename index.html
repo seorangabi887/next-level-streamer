@@ -1115,77 +1115,6 @@ a {
   color: var(--dark-accent);
 }
 
-/* ---- Harga promo: harga lama dicoret + harga baru + badge diskon,
-   plus countdown mundur sampai promo berakhir ---- */
-.paket-harga-wrap { display: flex; flex-direction: column; gap: 12px; }
-
-.paket-harga-row {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.paket-harga-lama {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--dark-text-soft);
-  text-decoration: line-through;
-  opacity: 0.6;
-}
-
-.paket-promo-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--dark-accent);
-  color: var(--navy);
-  font-size: 12px;
-  font-weight: 800;
-  padding: 3px 9px;
-  border-radius: 99px;
-  letter-spacing: 0.2px;
-}
-
-.paket-countdown {
-  display: inline-flex;
-  flex-direction: column;
-  gap: 6px;
-  background: rgba(236,180,77,0.08);
-  border: 1px solid rgba(236,180,77,0.3);
-  border-radius: 12px;
-  padding: 10px 14px;
-  width: fit-content;
-}
-
-.pc-label {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--dark-accent);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.pc-timer { display: flex; gap: 10px; }
-
-.pc-unit { display: flex; flex-direction: column; align-items: center; min-width: 34px; }
-
-.pc-num {
-  font-family: var(--font-display);
-  font-size: 20px;
-  color: var(--dark-text);
-  line-height: 1;
-}
-
-.pc-unit-label {
-  font-size: 9px;
-  color: var(--dark-text-soft);
-  text-transform: uppercase;
-  margin-top: 2px;
-}
-
-.paket-countdown.pc-ended .pc-label::after { content: " — berakhir"; }
-
 .paket-delivery {
   font-size: 13px;
   color: var(--dark-text-soft);
@@ -1316,18 +1245,6 @@ a {
 
 .paket-cta .btn-cta { position: relative; }
 
-.btn-promo-badge {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  background: #E14B4B;
-  color: #fff;
-  font-size: 11px;
-  font-weight: 800;
-  padding: 3px 8px;
-  border-radius: 99px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-}
 
 /* ===== ITEM UTAMA / ADD ON / THUMBNAIL ===== */
 .item-utama, .thumbnail-section { padding: 64px 0; }
@@ -1672,164 +1589,6 @@ body.modal-locked {
   overflow: hidden;
 }
 
-/* ===== POPUP PROMO: muncul otomatis sekali per sesi, tema navy+emas
-   (beda dari modal-box terang biasa) supaya kerasa lebih "urgent" /
-   promosional dan menonjol saat pertama kali web dibuka ===== */
-.promo-popup-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(13,13,32,0.72);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  z-index: 1100;
-}
-
-.promo-popup-overlay.open {
-  display: flex;
-  animation: promoFadeIn 0.25s ease;
-}
-
-@keyframes promoFadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-.promo-popup-box {
-  background: var(--navy);
-  border: 1.5px solid var(--dark-accent);
-  border-radius: 22px;
-  padding: 40px 32px 32px;
-  max-width: 420px;
-  width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
-  position: relative;
-  text-align: center;
-  animation: promoPopIn 0.3s cubic-bezier(0.22,1,0.36,1);
-  box-shadow: 0 24px 60px rgba(0,0,0,0.45);
-}
-
-@keyframes promoPopIn {
-  from { opacity: 0; transform: scale(0.92) translateY(10px); }
-  to   { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-.promo-popup-close {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  background: rgba(247,243,233,0.08);
-  border: 1px solid rgba(247,243,233,0.15);
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--dark-text);
-  transition: background 0.15s ease;
-}
-
-.promo-popup-close:hover { background: rgba(247,243,233,0.18); }
-
-.promo-popup-ribbon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 74px;
-  height: 74px;
-  border-radius: 50%;
-  background: var(--dark-accent);
-  color: var(--navy);
-  font-family: var(--font-display);
-  font-size: 22px;
-  margin: 0 auto 16px;
-  box-shadow: 0 0 0 6px rgba(236,180,77,0.15);
-}
-
-.promo-popup-eyebrow {
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--dark-accent);
-  margin-bottom: 6px;
-}
-
-.promo-popup-title {
-  font-family: var(--font-display);
-  font-size: 28px;
-  color: var(--dark-text);
-  line-height: 1.15;
-  margin-bottom: 12px;
-}
-
-.promo-popup-desc {
-  font-size: 14px;
-  color: var(--dark-text-soft);
-  line-height: 1.6;
-  margin-bottom: 20px;
-}
-
-.promo-popup-harga-baru {
-  color: var(--dark-accent);
-  font-size: 16px;
-}
-
-.promo-popup-harga-lama {
-  text-decoration: line-through;
-  opacity: 0.55;
-  margin-left: 4px;
-}
-
-.promo-popup-countdown {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 22px;
-}
-
-.promo-popup-countdown .pc-timer { display: flex; gap: 14px; }
-
-.promo-popup-countdown .pc-unit {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 44px;
-  background: rgba(236,180,77,0.08);
-  border: 1px solid rgba(236,180,77,0.3);
-  border-radius: 10px;
-  padding: 8px 4px;
-}
-
-.promo-popup-countdown .pc-num {
-  font-family: var(--font-display);
-  font-size: 24px;
-  color: var(--dark-text);
-  line-height: 1;
-}
-
-.promo-popup-countdown .pc-unit-label {
-  font-size: 9px;
-  color: var(--dark-text-soft);
-  text-transform: uppercase;
-  margin-top: 3px;
-}
-
-.promo-popup-cta {
-  display: inline-flex;
-  width: 100%;
-  justify-content: center;
-  background: var(--dark-accent);
-  color: var(--navy);
-}
-
-.promo-popup-cta:hover {
-  box-shadow: 0 8px 20px rgba(236,180,77,0.35);
-}
-
 /* ===== LIGHTBOX (preview karya diperbesar) ===== */
 .lightbox-overlay {
   position: fixed;
@@ -2110,37 +1869,6 @@ body.modal-locked {
 
 </main>
 
-<!-- ===== POPUP PROMO: muncul otomatis sekali per sesi saat web dibuka ===== -->
-<div class="promo-popup-overlay" id="promo-popup-overlay">
-  <div class="promo-popup-box" role="dialog" aria-modal="true" aria-labelledby="promo-popup-title">
-    <button class="promo-popup-close" id="promo-popup-close" aria-label="Tutup">
-      <svg viewBox="0 0 24 24" width="20" height="20"><path d="M18 6L6 18M6 6l12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-    </button>
-
-    <div class="promo-popup-ribbon">-50%</div>
-
-    <p class="promo-popup-eyebrow" data-i18n-id="Promo Terbatas" data-i18n-en="Limited Promo">Limited Promo</p>
-    <h3 class="promo-popup-title" id="promo-popup-title" data-i18n-id="Paket Basic Diskon 50%!" data-i18n-en="Basic Package 50% Off!">Basic Package 50% Off!</h3>
-    <p class="promo-popup-desc" id="promo-popup-desc">
-      Starting, Stinger &amp; Ending Screen for only
-      <strong class="promo-popup-harga-baru">Rp 500.000</strong>
-      <span class="promo-popup-harga-lama">Rp 1.000.000</span>
-      — valid until end of August.
-    </p>
-
-    <div class="promo-popup-countdown" data-deadline="2026-08-31T23:59:59+07:00">
-      <div class="pc-timer">
-        <div class="pc-unit"><span class="pc-num" data-unit="d">00</span><span class="pc-unit-label" data-i18n-id="Hari" data-i18n-en="Days">Days</span></div>
-        <div class="pc-unit"><span class="pc-num" data-unit="h">00</span><span class="pc-unit-label" data-i18n-id="Jam" data-i18n-en="Hrs">Hrs</span></div>
-        <div class="pc-unit"><span class="pc-num" data-unit="m">00</span><span class="pc-unit-label" data-i18n-id="Menit" data-i18n-en="Min">Min</span></div>
-        <div class="pc-unit"><span class="pc-num" data-unit="s">00</span><span class="pc-unit-label" data-i18n-id="Detik" data-i18n-en="Sec">Sec</span></div>
-      </div>
-    </div>
-
-    <a href="#paket-utama" class="btn-cta promo-popup-cta" id="promo-popup-cta" data-i18n-id="Klaim Promo Basic" data-i18n-en="Claim Basic Promo">Claim Basic Promo</a>
-  </div>
-</div>
-
 <!-- ===== MODAL DETAIL PRODUK (dipakai bersama semua level: paket, item, add-on) ===== -->
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
@@ -2408,13 +2136,10 @@ const GALERI_ITEMS = [
 // ============================================================
 const PAKET_DATA = [
   {
+      {
     id: "basic",
     nama: "Basic",
-    harga: "Rp 500.000",
-    hargaCoret: "Rp 1.000.000",
-    promoBadge: "50%",
-    promoLabel: "Promo 50% s/d akhir Agustus",
-    promoDeadline: "2026-08-31T23:59:59+07:00",
+    harga: "Rp 1.000.000",
     tagline: "Cocok untuk streamer yang baru memulai dengan budget terjangkau.",
     delivery: "7 Hari",
     included: ["Starting Screen", "Stinger Transition", "Ending Screen"],
@@ -2668,8 +2393,6 @@ const TR_DICT = {
   "Cocok untuk streamer yang baru memulai dengan budget terjangkau.": "Great for streamers just starting out on a budget.",
   "Tampilan lebih menarik dengan ilustrasi dan animasi yang lebih hidup.": "A more eye-catching look with richer illustration and animation.",
   "Kualitas artwork tertinggi dengan kebebasan penuh menentukan konsep.": "Top-tier artwork quality with full creative freedom on the concept.",
-  "Promo 50% s/d akhir Agustus": "50% Off — through end of August",
-  "Promo berakhir dalam": "Promo ends in",
   // ---- Paket: quality tier values (yang masih Indonesia) ----
   "Standar (tidak bisa request)": "Standard (no custom requests)",
   "Tidak bisa request style khusus": "No custom style requests",
@@ -2736,15 +2459,6 @@ function applyStaticTranslations() {
     const val = window.currentLang === 'en' ? el.dataset.i18nEn : el.dataset.i18nId;
     if (val !== undefined) el.innerHTML = val;
   });
-  // konten campuran (harga inline di tengah kalimat) ditangani manual
-  const popupDesc = document.getElementById('promo-popup-desc');
-  if (popupDesc) {
-    const hargaBaru = formatPrice('Rp 500.000');
-    const hargaLama = formatPrice('Rp 1.000.000');
-    popupDesc.innerHTML = window.currentLang === 'en'
-      ? `Starting, Stinger &amp; Ending Screen for only <strong class="promo-popup-harga-baru">${hargaBaru}</strong> <span class="promo-popup-harga-lama">${hargaLama}</span> — valid until end of August.`
-      : `Starting, Stinger &amp; Ending Screen cuma <strong class="promo-popup-harga-baru">${hargaBaru}</strong> <span class="promo-popup-harga-lama">${hargaLama}</span> — berlaku sampai akhir Agustus.`;
-  }
   document.querySelectorAll('.lang-toggle .lang-opt').forEach((el) => {
     el.classList.toggle('active', el.dataset.lang === window.currentLang);
   });
@@ -3739,27 +3453,7 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
       // Harga: kalau ada hargaCoret (lagi promo), tampilkan harga lama
       // dicoret + harga baru + badge diskon + countdown mundur.
       // Kalau tidak, tampilkan harga biasa seperti sebelumnya.
-      const hargaHTML = p.hargaCoret ? `
-        <div class="paket-harga-wrap">
-          <div class="paket-harga-row">
-            <span class="paket-harga-lama">${formatPrice(p.hargaCoret)}</span>
-            <span class="paket-harga">${formatPrice(p.harga)}</span>
-            <span class="paket-promo-badge">-${p.promoBadge}</span>
-          </div>
-          ${p.promoDeadline ? `
-          <div class="paket-countdown" data-deadline="${p.promoDeadline}">
-            <span class="pc-label">${tr(p.promoLabel) || tr('Promo berakhir dalam')}</span>
-            <div class="pc-timer">
-              <div class="pc-unit"><span class="pc-num" data-unit="d">00</span><span class="pc-unit-label">${tr('Hari')}</span></div>
-              <div class="pc-unit"><span class="pc-num" data-unit="h">00</span><span class="pc-unit-label">${tr('Jam')}</span></div>
-              <div class="pc-unit"><span class="pc-num" data-unit="m">00</span><span class="pc-unit-label">${tr('Menit')}</span></div>
-              <div class="pc-unit"><span class="pc-num" data-unit="s">00</span><span class="pc-unit-label">${tr('Detik')}</span></div>
-            </div>
-          </div>` : ''}
-        </div>
-      ` : `<p class="paket-harga">${formatPrice(p.harga)}</p>`;
-
-      const badgeHTML = p.promoBadge ? `<span class="btn-promo-badge">-${p.promoBadge}</span>` : '';
+           const hargaHTML = `<p class="paket-harga">${formatPrice(p.harga)}</p>`;
 
       tabContent.innerHTML = `
         <div class="paket-card ${p.unggulan ? 'unggulan' : ''}">
@@ -3777,7 +3471,7 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
               </div>
               <div class="paket-cta">
                 <a href="https://wa.me/6288228016458?text=Halo%20Abi%2C%20saya%20mau%20pesan%20paket%20${encodeURIComponent(p.nama)}"
-                   class="btn-cta" target="_blank" rel="noopener">${tr('Pesan')} ${p.nama}${badgeHTML}</a>
+                   class="btn-cta" target="_blank" rel="noopener">${tr('Pesan')} ${p.nama}</a>
               </div>
             </div>
             <div class="paket-card-right">
@@ -3806,14 +3500,7 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
     renderTabContent();
     document.addEventListener('nls:langchange', () => { renderTabBtns(); renderTabContent(); });
 
-    // Dipanggil dari luar (popup promo) supaya CTA-nya bisa langsung
-    // memastikan tab Basic yang aktif sebelum di-scroll ke section ini.
-    window.switchToPaketTab = (idx) => {
-      if (idx < 0 || idx >= PAKET_DATA.length) return;
-      activeTab = idx;
-      renderTabBtns();
-      renderTabContent();
-    };
+  
   }
 
   // ==============================================================
@@ -3947,82 +3634,6 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
     });
   }
 
-})();
-
-// ============================================================
-// COUNTDOWN: dipakai bareng oleh countdown di kartu Paket Basic dan
-// countdown di popup promo — cari ulang [data-deadline] tiap detik
-// (bukan disimpan sekali di awal) supaya tetap kena walau elemennya
-// baru muncul belakangan (misalnya pas ganti tab paket).
-// ============================================================
-(function () {
-  function tick() {
-    document.querySelectorAll('[data-deadline]').forEach((el) => {
-      const deadline = new Date(el.dataset.deadline).getTime();
-      if (isNaN(deadline)) return;
-      const diff = Math.max(0, deadline - Date.now());
-
-      const d = Math.floor(diff / 86400000);
-      const h = Math.floor((diff % 86400000) / 3600000);
-      const m = Math.floor((diff % 3600000) / 60000);
-      const s = Math.floor((diff % 60000) / 1000);
-
-      const setUnit = (unit, val) => {
-        const n = el.querySelector(`[data-unit="${unit}"]`);
-        if (n) n.textContent = String(val).padStart(2, '0');
-      };
-      setUnit('d', d); setUnit('h', h); setUnit('m', m); setUnit('s', s);
-      el.classList.toggle('pc-ended', diff <= 0);
-    });
-  }
-  tick();
-  setInterval(tick, 1000);
-})();
-
-// ============================================================
-// POPUP PROMO: muncul otomatis sekali per sesi browser saat web
-// pertama dibuka, nawarin promo 50% paket Basic + countdown.
-// ============================================================
-(function () {
-  const overlay = document.getElementById('promo-popup-overlay');
-  if (!overlay) return;
-
-  const closeBtn = document.getElementById('promo-popup-close');
-  const cta      = document.getElementById('promo-popup-cta');
-  const STORAGE_KEY = 'nls_promoPopupShown';
-
-  function openPopup() {
-    overlay.classList.add('open');
-    document.body.classList.add('modal-locked');
-  }
-  function closePopup() {
-    overlay.classList.remove('open');
-    document.body.classList.remove('modal-locked');
-  }
-
-  if (!sessionStorage.getItem(STORAGE_KEY)) {
-    setTimeout(() => {
-      openPopup();
-      sessionStorage.setItem(STORAGE_KEY, '1');
-    }, 1400);
-  }
-
-  if (closeBtn) closeBtn.addEventListener('click', closePopup);
-  overlay.addEventListener('click', (e) => { if (e.target === overlay) closePopup(); });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && overlay.classList.contains('open')) closePopup();
-  });
-
-  if (cta) {
-    cta.addEventListener('click', (e) => {
-      e.preventDefault();
-      closePopup();
-      if (typeof window.switchToPaketTab === 'function') window.switchToPaketTab(0);
-      setTimeout(() => {
-        document.querySelector('#paket-utama')?.scrollIntoView({ behavior: 'smooth' });
-      }, 50);
-    });
-  }
 })();
 
 </script>
